@@ -6,10 +6,10 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-func PrivateKeyFile(file string, passphrase []byte) ssh.AuthMethod {
+func PrivateKeyFile(file string, passphrase []byte) (ssh.AuthMethod, error) {
 	buffer, err := ioutil.ReadFile(file)
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
 	var key ssh.Signer
@@ -20,8 +20,8 @@ func PrivateKeyFile(file string, passphrase []byte) ssh.AuthMethod {
 	}
 
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
-	return ssh.PublicKeys(key)
+	return ssh.PublicKeys(key), nil
 }
